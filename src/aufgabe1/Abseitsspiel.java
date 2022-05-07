@@ -28,6 +28,8 @@ public class Abseitsspiel {
             Spieler neuerSpieler = new Spieler(i);
             spieler.add(neuerSpieler);
         }
+
+        System.out.println(this.getSpielRegeln());
     }
 
 
@@ -35,7 +37,7 @@ public class Abseitsspiel {
      * Startet das Abseitsspiel, indem so lange eine neue Runde gestartet wird, wie es erwünscht ist.
      */
     public void starteSpiel() {
-        System.out.println("Das Abseitsspiel wird gestartet...");
+        System.out.println("Das Abseitsspiel wird gestartet...\n");
         boolean neueRunde = true;
 
         // Startet so lange eine neue Runde bis kein Spiel mehr erwünscht wird.
@@ -111,7 +113,12 @@ public class Abseitsspiel {
      * @return Eine kurze Beschreibung des Spiels und der Spielregeln als Text.
      */
     private String getSpielRegeln() {
-        return "Platzhalter";
+        return ("Das Abseitsspiel:\n" +
+                "Mehrere Spieler würfeln hintereinander. Ziel des Spiels ist es, " +
+                "als Augensumme eine festgelegte Zahl (Abseits) nicht zu überschreiten.\n" +
+                "Wenn ein Spieler die festgelegte Abseitszahl überschreitet, " +
+                "so scheidet dieser aus und die anderen Spieler beginnen eine neue Runde.\n" +
+                "Der oder die Spieler:in, welche:r als letztes verbleibt, gewinnt das Spiel.\n");
     }
 
     /**
