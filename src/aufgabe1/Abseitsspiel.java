@@ -9,9 +9,7 @@ import java.util.Random;
  */
 public class Abseitsspiel {
 
-    private List<Spieler> spieler;
-
-    private int abseitsZahl;
+    private final List<Spieler> spieler;
 
     /**
      * Der Konstruktor nimmt als Parameter ein Array an Strings, den Spielernamen und
@@ -19,8 +17,8 @@ public class Abseitsspiel {
      *
      * @param spielerNamen Beinhaltet ein Array an Strings mit allen Spielernamen.
      */
-    public Abseitsspiel(String spielerNamen[]) {
-        spieler = new ArrayList<Spieler>();
+    public Abseitsspiel(String[] spielerNamen) {
+        spieler = new ArrayList<>();
 
         /* Iteriert durch das Namen-Array der Spieler und erstellt zu jedem Spieler eine neue Spieler-Instanz, welche
          in der "spieler" List als ArrayList gespeichert werden. */
@@ -49,7 +47,6 @@ public class Abseitsspiel {
             int input = de.oop2022.util.UserInterface.requestInt("Wähle 1 für eine neue Runde.\n Wähle 0 zum Abbrechen.",
                                                         0,1);
             if(input == 0 ) { neueRunde = false; }
-            if(input == 1 ) { neueRunde = true; }
 
             // Setze alle Spielerdaten inklusive des "Ausgeschieden" Status zurück.
             spielZuruecksetzen(true);
@@ -67,8 +64,8 @@ public class Abseitsspiel {
         // Siehe ermittleGewinner() Methode.
         int gewinner = -1;
         int derzeitigerSpieler = 0;
-        this.abseitsZahl = generiereAbseitszahl();
-        System.out.println("Die Abseitszahl liegt bei " + this.abseitsZahl + "!\n");
+        int abseitsZahl = generiereAbseitszahl();
+        System.out.println("Die Abseitszahl liegt bei " + abseitsZahl + "!\n");
 
         // Die Spieler spielen so lange, bis es nur noch 1 Mitspieler verbleibt.
         while(ermittleGewinner() == -1) {
@@ -97,7 +94,7 @@ public class Abseitsspiel {
                     spieler.get(derzeitigerSpieler).setAusgeschieden(true);
                     spielZuruecksetzen(false);
                 } else {
-                    System.out.println("Das Spiel geht weiter.\n");
+                    System.out.println("Das Spiel geht weiter.\n\n");
                 }
             }
 
@@ -113,12 +110,12 @@ public class Abseitsspiel {
      * @return Eine kurze Beschreibung des Spiels und der Spielregeln als Text.
      */
     private String getSpielRegeln() {
-        return ("Das Abseitsspiel:\n" +
-                "Mehrere Spieler würfeln hintereinander. Ziel des Spiels ist es, " +
-                "als Augensumme eine festgelegte Zahl (Abseits) nicht zu überschreiten.\n" +
-                "Wenn ein Spieler die festgelegte Abseitszahl überschreitet, " +
-                "so scheidet dieser aus und die anderen Spieler beginnen eine neue Runde.\n" +
-                "Der oder die Spieler:in, welche:r als letztes verbleibt, gewinnt das Spiel.\n");
+        return ("""
+                Das Abseitsspiel:
+                Mehrere Spieler würfeln hintereinander. Ziel des Spiels ist es, als Augensumme eine festgelegte Zahl (Abseits) nicht zu überschreiten.
+                Wenn ein Spieler die festgelegte Abseitszahl überschreitet, so scheidet dieser aus und die anderen Spieler beginnen eine neue Runde.
+                Der oder die Spieler:in, welche:r als letztes verbleibt, gewinnt das Spiel.
+                """);
     }
 
     /**
