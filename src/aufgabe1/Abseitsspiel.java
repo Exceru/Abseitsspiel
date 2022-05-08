@@ -14,20 +14,28 @@ public class Abseitsspiel {
     /**
      * Der Konstruktor nimmt als Parameter ein Array an Strings, den Spielernamen und
      * erstellt bzw. speichert damit direkt die Instanzen der Spieler in der "spieler" List.
+     * Außerdem prüft er ob es genügend Mitspieler (mindestens 2) gibt, andernfalls gibt er eine
+     * Fehlermeldung aus. Wenn es genügend Spieler gibt, so werden zudem noch die Spielregeln
+     * ausgegeben.
      *
      * @param spielerNamen Beinhaltet ein Array an Strings mit allen Spielernamen.
      */
     public Abseitsspiel(String[] spielerNamen) {
         spieler = new ArrayList<>();
 
-        /* Iteriert durch das Namen-Array der Spieler und erstellt zu jedem Spieler eine neue Spieler-Instanz, welche
-         in der "spieler" List als ArrayList gespeichert werden. */
-        for(String i : spielerNamen) {
-            Spieler neuerSpieler = new Spieler(i);
-            spieler.add(neuerSpieler);
+        if(spielerNamen.length > 1) {
+            /* Iteriert durch das Namen-Array der Spieler und erstellt zu jedem Spieler eine neue Spieler-Instanz, welche
+                in der "spieler" List als ArrayList gespeichert werden. */
+            for(String i : spielerNamen) {
+                Spieler neuerSpieler = new Spieler(i);
+                spieler.add(neuerSpieler);
+            }
+
+            System.out.println(this.getSpielRegeln());
+        } else {
+            throw new IllegalArgumentException("Das Spiel kann aufgrund von zu wenigen Mitspielern nicht konstruiert werden.");
         }
 
-        System.out.println(this.getSpielRegeln());
     }
 
 
@@ -62,23 +70,27 @@ public class Abseitsspiel {
      */
     private void rundeStarten(){
         // Siehe ermittleGewinner() Methode.
-        int gewinner = -1;
         int derzeitigerSpieler = 0;
         int abseitsZahl = generiereAbseitszahl();
         System.out.println("Die Abseitszahl liegt bei " + abseitsZahl + "!\n");
 
-        // Die Spieler spielen so lange, bis es nur noch 1 Mitspieler verbleibt.
+        // Es wird so lange gespielt, wie es noch keinen Gewinner gibt (-1).
         while(ermittleGewinner() == -1) {
 
             // Ein Spieler darf nur würfeln, wenn er noch nicht ausgeschieden ist.
             if(!spieler.get(derzeitigerSpieler).isAusgeschieden()){
+
+                // Der Lesbarkeit halber wird der Name in einer Variable gespeichert.
                 String spielerName = spieler.get(derzeitigerSpieler).getName();
                 System.out.println(spielerName + " ist am Zug und würfelt eine...");
 
+                // Der Enter Input zum würfeln wird verlangt.
                 de.oop2022.util.UserInterface.requestUserPressReturn();
+
                 int augenzahl = Wuerfel.wuerfeln();
                 System.out.println(augenzahl);
 
+                // Die neue Augensumme wird gesetzt und auf dem Bildschirm ausgegeben
                 spieler.get(derzeitigerSpieler).setSumme(spieler.get(derzeitigerSpieler).getSumme() + augenzahl);
                 System.out.println("Die Augensumme von " + spielerName + " liegt nun bei "
                         + spieler.get(derzeitigerSpieler).getSumme() + ".");
@@ -86,21 +98,28 @@ public class Abseitsspiel {
                 // Prüfe nun ob der Spieler noch im Spiel ist, oder ausgeschieden wird.
                 if(spieler.get(derzeitigerSpieler).getSumme() > 30) {
                     System.out.println("Damit scheidet " + spielerName + " aus.");
+
+                    // Falls es noch keinen Gewinner gibt, so wird eine neue Runde gestartet.
                     if (ermittleGewinner() != -1) {
                         System.out.println("Die anderen starten eine neue Runde.");
-
                     }
+
                     System.out.println("-----------------------------------------------------------------------------\n");
+
+                    // Der Spieler scheidet aus und das Spiel wird für alle anderen zurückgesetzt
                     spieler.get(derzeitigerSpieler).setAusgeschieden(true);
                     spielZuruecksetzen(false);
+
                 } else {
                     System.out.println("Das Spiel geht weiter.\n\n");
                 }
             }
 
+            // Der Index des nächsten Spielers wird berechnet
             derzeitigerSpieler = (derzeitigerSpieler + 1) % spieler.size();
         }
 
+        // Am Ende eines Spiels gibt es stets einen eindeutigen Gewinner
         System.out.println("*** " + spieler.get(ermittleGewinner()).getName() + " hat das Spiel gewonnen! ***");
 
     }
@@ -117,14 +136,6 @@ public class Abseitsspiel {
                 Der oder die Spieler:in, welche:r als letztes verbleibt, gewinnt das Spiel.
                 """);
     }
-
-    /**
-     * @param spieler Fügt diesen Spieler in die "spieler" List ein.
-     */
-    private void spielerHinzufuegen(Spieler spieler) {
-
-    }
-
 
     /**
      * Setzt von jedem Spieler die Spieldaten zurück. (Summe, Ausgeschieden)
