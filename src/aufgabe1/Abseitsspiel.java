@@ -69,8 +69,12 @@ public class Abseitsspiel {
      * Startet eine neue Runde/Spiel. Der Spielverlauf findet in dieser Methode statt.
      */
     private void rundeStarten(){
-        // Siehe ermittleGewinner() Methode.
+        // Speichert Index des derzeitigen Spielers.
         int derzeitigerSpieler = 0;
+
+        // Nützlich um den Platz nach dem Ausscheiden zu berechnen.
+        int platzCounter = 0;
+
         int abseitsZahl = generiereAbseitszahl();
         System.out.println("Die Abseitszahl liegt bei " + abseitsZahl + "!\n");
 
@@ -106,8 +110,14 @@ public class Abseitsspiel {
 
                     System.out.println("-----------------------------------------------------------------------------\n");
 
-                    // Der Spieler scheidet aus und das Spiel wird für alle anderen zurückgesetzt
+                    // Der Spieler scheidet aus und das Spiel wird für alle anderen zurückgesetzt.
                     spieler.get(derzeitigerSpieler).setAusgeschieden(true);
+
+                    // Der Platz des Spielers wird berechnet und der Counter wird iteriert.
+                    int platz = spieler.size() - platzCounter;
+                    platzCounter += 1;
+
+                    spieler.get(derzeitigerSpieler).setPlatz(platz);
                     spielZuruecksetzen(false);
 
                 } else {
@@ -119,8 +129,11 @@ public class Abseitsspiel {
             derzeitigerSpieler = (derzeitigerSpieler + 1) % spieler.size();
         }
 
-        // Am Ende eines Spiels gibt es stets einen eindeutigen Gewinner
+        // Am Ende eines Spiels gibt es stets einen eindeutigen Gewinner.
         System.out.println("*** " + spieler.get(ermittleGewinner()).getName() + " hat das Spiel gewonnen! ***");
+        // Die Spielauswertung, also die Plätze der Mitspieler werden ausgegeben.
+        System.out.println("Spielauswertung:");
+        System.out.println(getSpielAuswertung());
 
     }
 
@@ -139,13 +152,15 @@ public class Abseitsspiel {
 
     /**
      * Setzt von jedem Spieler die Spieldaten zurück. (Summe, Ausgeschieden)
-     * @param hardReset Aktiviert den vollständigen Reset, also inklusive des "ausgeschieden" Status.
+     * @param hardReset Aktiviert den vollständigen Reset, also inklusive des "ausgeschieden" Status und das Zurücksetzen des
+     *                 erreichten Platzes.
      */
     private void spielZuruecksetzen(boolean hardReset){
         for(Spieler i : spieler) {
             i.setSumme(0);
             if(hardReset) {
                 i.setAusgeschieden(false);
+                i.setPlatz(1);
             }
         }
     }
@@ -186,5 +201,25 @@ public class Abseitsspiel {
     }
 
 
+    /**
+     * @return Spielauswertung, mit den erreichen Plätzen der jeweiligen Spieler.
+     */
+    private String getSpielAuswertung(){
+        String[] spielerNamen = new String[spieler.size()];
+
+        // Plätze der jeweiligen Spieler werden ermittelt und kommen an die richtige Stelle im Namen-Array.
+        for (Spieler spieler : spieler) {
+            spielerNamen[spieler.getPlatz() - 1] = spieler.getName();  // -1, da Array bei 0 beginnt.
+        }
+
+        StringBuilder auswertung = new StringBuilder();
+
+        // Der String wird mithilfe des sortierten Namen-Arrays und einem StringBuilder erstellt.
+        for(int i = 0; i < spielerNamen.length; i++){
+            auswertung.append(i + 1).append(". Platz:  ").append(spielerNamen[i]).append("\n");
+        }
+
+        return auswertung.toString();
+    }
 
 }
