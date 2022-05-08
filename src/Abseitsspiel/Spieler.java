@@ -1,4 +1,4 @@
-package aufgabe1;
+package Abseitsspiel;
 /** Spielerklasse f&uuml;r das Abseitsspiel, welche die Daten und Methoden eines jeden Spielers enth&auml;lt.*/
 public class Spieler {
     /**
