@@ -5,17 +5,20 @@ import java.util.List;
 import java.util.Random;
 
 /** Die Klasse Abseitsspiel beinhaltet alle Spieler und Methoden zum
- *  Start, Ablauf und Abbruch eines Würfel-Abseitsspiel
+ *  Start, Ablauf und Abbruch eines W&uuml;rfel-Abseitsspiel
  */
 public class Abseitsspiel {
 
+    /**
+     * Speichert alle Mitspieler Instanzen in einer Liste.
+     */
     private final List<Spieler> spieler;
 
     /**
      * Der Konstruktor nimmt als Parameter ein Array an Strings, den Spielernamen und
-     * erstellt bzw. speichert damit direkt die Instanzen der Spieler in der "spieler" List.
-     * Außerdem prüft er ob es genügend Mitspieler (mindestens 2) gibt, andernfalls gibt er eine
-     * Fehlermeldung aus. Wenn es genügend Spieler gibt, so werden zudem noch die Spielregeln
+     * erstellt bzw. speichert damit direkt die Instanzen der Spieler in der &quot;spieler&quot; List.
+     * Au&szlig;erdem pr&uuml;ft er ob es gen&uuml;gend Mitspieler (mindestens 2) gibt, andernfalls gibt er eine
+     * Fehlermeldung aus. Wenn es gen&uuml;gend Spieler gibt, so werden zudem noch die Spielregeln
      * ausgegeben.
      *
      * @param spielerNamen Beinhaltet ein Array an Strings mit allen Spielernamen.
@@ -23,6 +26,7 @@ public class Abseitsspiel {
     public Abseitsspiel(String[] spielerNamen) {
         spieler = new ArrayList<>();
 
+        // Es werden mindestens zwei Mitspieler verlangt, um das Spiel spielen zu können.
         if(spielerNamen.length > 1) {
             /* Iteriert durch das Namen-Array der Spieler und erstellt zu jedem Spieler eine neue Spieler-Instanz, welche
                 in der "spieler" List als ArrayList gespeichert werden. */
@@ -40,7 +44,7 @@ public class Abseitsspiel {
 
 
     /**
-     * Startet das Abseitsspiel, indem so lange eine neue Runde gestartet wird, wie es erwünscht ist.
+     * Startet das Abseitsspiel, indem so lange eine neue Runde gestartet wird, wie es erw&uuml;nscht ist.
      */
     public void starteSpiel() {
         System.out.println("Das Abseitsspiel wird gestartet...\n");
@@ -66,7 +70,8 @@ public class Abseitsspiel {
 
 
     /**
-     * Startet eine neue Runde/Spiel. Der Spielverlauf findet in dieser Methode statt.
+     * Startet eine neue Runde (nicht zu verwechseln mit den Runden, welche im Spiel nach dem Ausscheiden gestartet werden!).
+     * Der Spielverlauf findet in dieser Methode statt. Die Methode wird endet, sobald jemand das Spiel gewonnen hat.
      */
     private void rundeStarten(){
         // Speichert Index des derzeitigen Spielers.
@@ -94,7 +99,7 @@ public class Abseitsspiel {
                 int augenzahl = Wuerfel.wuerfeln();
                 System.out.println(augenzahl);
 
-                // Die neue Augensumme wird gesetzt und auf dem Bildschirm ausgegeben
+                // Die neue Augensumme wird gesetzt und auf dem Bildschirm ausgegeben.
                 spieler.get(derzeitigerSpieler).setSumme(spieler.get(derzeitigerSpieler).getSumme() + augenzahl);
                 System.out.println("Die Augensumme von " + spielerName + " liegt nun bei "
                         + spieler.get(derzeitigerSpieler).getSumme() + ".");
@@ -125,7 +130,7 @@ public class Abseitsspiel {
                 }
             }
 
-            // Der Index des nächsten Spielers wird berechnet
+            // Der Index des nächsten Spielers wird berechnet.
             derzeitigerSpieler = (derzeitigerSpieler + 1) % spieler.size();
         }
 
@@ -151,8 +156,8 @@ public class Abseitsspiel {
     }
 
     /**
-     * Setzt von jedem Spieler die Spieldaten zurück. (Summe, Ausgeschieden)
-     * @param hardReset Aktiviert den vollständigen Reset, also inklusive des "ausgeschieden" Status und das Zurücksetzen des
+     * Setzt von jedem Spieler die Spieldaten zur&uuml;ck. (Summe, Ausgeschieden)
+     * @param hardReset Aktiviert den vollst&auml;ndigen Reset, also inklusive des &quot;ausgeschieden&quot; Status und das Zur&uuml;cksetzen des
      *                 erreichten Platzes.
      */
     private void spielZuruecksetzen(boolean hardReset){
@@ -167,7 +172,7 @@ public class Abseitsspiel {
 
 
     /**
-     * @return Gibt einen zufälligen int zwischen 30 und 50 zurück.
+     * @return Gibt einen zuf&auml;lligen int zwischen 30 und 50 zur&uuml;ck.
      */
     private int generiereAbseitszahl(){
         Random random = new Random();
@@ -176,8 +181,8 @@ public class Abseitsspiel {
 
 
     /**
-     * @return Gibt den Index des Gewinners aus der spieler List zurück.
-     * Wenn es keinen Gewinner gibt, wird -1 zurückgegeben.
+     * @return Gibt den Index des Gewinners aus der spieler List zur&uuml;ck.
+     * Wenn es keinen Gewinner gibt, wird -1 zur&uuml;ckgegeben.
      */
     private int ermittleGewinner(){
         int anzahlAktiveSpieler = 0;
@@ -202,7 +207,7 @@ public class Abseitsspiel {
 
 
     /**
-     * @return Spielauswertung, mit den erreichen Plätzen der jeweiligen Spieler.
+     * @return Spielauswertung, mit den erreichen Pl&auml;tzen der jeweiligen Spieler.
      */
     private String getSpielAuswertung(){
         String[] spielerNamen = new String[spieler.size()];
